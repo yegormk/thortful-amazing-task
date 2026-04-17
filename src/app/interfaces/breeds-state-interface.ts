@@ -6,5 +6,4 @@ export interface BreedsStateInterface {
   catsPictures: CatImage[];
   breedsLoading: boolean;
   catsPicturesLoading: boolean;
-  error: string | null;
 }

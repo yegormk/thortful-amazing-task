@@ -1,9 +1,17 @@
 @if (!catsStore.catsPicturesLoading()) {
-  <div class="wrapper px-4">
-    @for (catImage of catsStore.catsPictures(); track catImage.id) {
+  <div class="wrapper px-4 pb-4">
+    @for (catImage of paginatedPictures(); track catImage.id) {
       <img class="cat-image" [src]="catImage.url" alt="Image of a cat" />
     }
   </div>
+  <mat-paginator
+    class="paginator"
+    [length]="catsStore.catsPictures().length"
+    [pageIndex]="pageIndex()"
+    [pageSize]="pageSize()"
+    [pageSizeOptions]="[5, 10, 15, 20]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
 } @else {
   <div class="flex min-h-screen items-center justify-center">
     <mat-spinner class="spinner"></mat-spinner>

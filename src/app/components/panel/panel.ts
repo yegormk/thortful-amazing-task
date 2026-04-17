@@ -1,19 +1,19 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-
-import { CatApi } from '../../services/cat-api';
-import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
-import { MatOption, MatSelect } from '@angular/material/select';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CatBreed } from '../../interfaces/cat-breed.interface';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatButton } from '@angular/material/button';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatOption, MatSelect } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { map, Observable, startWith } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
-import { CatsStore } from 'src/app/store/cats-store';
-import { CatImage } from 'src/app/interfaces/cat-image.interface';
-import { MatButton } from '@angular/material/button';
+
 import { CatsGallery } from 'src/app/components/cats-gallery/cats-gallery';
+import { CatBreed } from 'src/app/interfaces/cat-breed.interface';
+import { CatImage } from 'src/app/interfaces/cat-image.interface';
+import { CatApi } from 'src/app/services/cat-api';
+import { CatsStore } from 'src/app/store/cats-store';
 
 @Component({
   selector: 'app-panel',
@@ -29,7 +29,7 @@ import { CatsGallery } from 'src/app/components/cats-gallery/cats-gallery';
     AsyncPipe,
     MatButton,
     MatSelect,
-    CatsGallery,
+    CatsGallery
   ],
   templateUrl: './panel.html',
   styleUrl: './panel.scss',
@@ -48,26 +48,14 @@ export class Panel implements OnInit {
 
   public ngOnInit(): void {
     this.initState();
+    this.getBreeds();
+    this.getCatsPictures();
   }
 
   private initState(): void {
     this.searchParamsForm = this.fb.group({
       chosenBreed: [],
       quantityOfPictures: 10,
-    });
-
-    this.catsStore.setBreedsLoading(true);
-    this.catApi.getBreeds().subscribe({
-      next: (value: CatBreed[]) => {
-        this.catsStore.addBreeds(value);
-      },
-      error: error => {
-        this.catsStore.addBreeds([]);
-        this.searchParamsForm.get('chosenBreed')?.disable();
-        this._snackBar.open(`Error: ${error.message ?? 'Failed to load breeds'}`, '', {
-          duration: 3000,
-        });
-      },
     });
 
     this.filteredOptions = (
@@ -93,7 +81,23 @@ export class Panel implements OnInit {
     return catBreed && catBreed.name ? catBreed.name : '';
   }
 
-  getCatsPictures(): void {
+  private getBreeds(): void {
+    this.catsStore.setBreedsLoading(true);
+    this.catApi.getBreeds().subscribe({
+      next: (value: CatBreed[]) => {
+        this.catsStore.addBreeds(value);
+      },
+      error: error => {
+        this.catsStore.addBreeds([]);
+        this.searchParamsForm.get('chosenBreed')?.disable();
+        this._snackBar.open(`Error: ${error.message ?? 'Failed to load breeds'}`, '', {
+          duration: 3000,
+        });
+      },
+    });
+  }
+
+  public getCatsPictures(): void {
     this.catsStore.setCatsPicturesLoading(true);
     this.catApi
       .getImagesOfSpecificBreed(
@@ -104,7 +108,7 @@ export class Panel implements OnInit {
         next: (catsImages: CatImage[]) => {
           this.catsStore.addCatsPictures(catsImages);
         },
-        error: () => this.catsStore.addCatsPictures([])
+        error: () => this.catsStore.addCatsPictures([]),
       });
   }
 }

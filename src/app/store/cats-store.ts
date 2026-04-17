@@ -8,7 +8,6 @@ export const CatsStore = signalStore(
   withState<BreedsStateInterface>({
     breeds: [],
     catsPictures: [],
-    error: null,
     breedsLoading: false,
     catsPicturesLoading: false,
   }),
