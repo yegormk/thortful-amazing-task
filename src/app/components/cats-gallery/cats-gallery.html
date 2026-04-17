@@ -1,0 +1,11 @@
+@if (!catsStore.catsPicturesLoading()) {
+  <div class="wrapper px-4">
+    @for (catImage of catsStore.catsPictures(); track catImage.id) {
+      <img class="cat-image" [src]="catImage.url" alt="Image of a cat" />
+    }
+  </div>
+} @else {
+  <div class="flex min-h-screen items-center justify-center">
+    <mat-spinner class="spinner"></mat-spinner>
+  </div>
+}

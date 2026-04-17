@@ -1,0 +1,13 @@
+.form-data {
+  display: flex;
+  align-items: baseline;
+  padding: 10px;
+  gap: 10px;
+}
+
+.spinner {
+  position: absolute;
+  top: 20px;
+  left: 80px;
+  z-index: 1;
+}
