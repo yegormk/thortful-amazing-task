@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -23,6 +24,7 @@ import { CatsStore } from 'src/app/store/cats-store';
 })
 export class BreedsLibrary implements OnInit {
   private catApi = inject(CatApi);
+  private destroyRef = inject(DestroyRef);
   public catsStore = inject(CatsStore);
   private _snackBar = inject(MatSnackBar);
 
@@ -51,7 +53,7 @@ export class BreedsLibrary implements OnInit {
   private checkPresentBreeds(): void {
     if (!this.catsStore.breeds().length) {
       this.catsStore.setBreedsLoading(true);
-      this.catApi.getBreeds().subscribe({
+      this.catApi.getBreeds().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: breeds => {
           this.catsStore.addBreeds(breeds);
           this.catsStore.setBreedsLoading(false);
