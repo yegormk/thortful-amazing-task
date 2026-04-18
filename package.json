@@ -8,7 +8,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "github-build": "ng build --configuration production --base-href 'https://yegormk.github.io/thortful-amazing-task/'",
+    "github-deploy": "npx angular-cli-ghpages --dir=dist/thortful-amazing-task/browser --no-silent"
   },
   "private": true,
   "packageManager": "npm@11.6.0",
