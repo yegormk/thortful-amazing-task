@@ -4,7 +4,6 @@ import { environment } from 'src/environments/environment';
 
 export const apiTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const token = environment.API_KEY;
-  console.log('token:', token);
   if (!token) {
     return next(req);
   }

@@ -11,3 +11,13 @@
   left: 80px;
   z-index: 1;
 }
+
+@media (max-width: 640px) {
+  .form-data {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .breed-search {
+    width: 100%;
+  }
+}

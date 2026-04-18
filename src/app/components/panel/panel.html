@@ -1,6 +1,6 @@
 <div>
   <form class="form-data" [formGroup]="searchParamsForm">
-    <mat-form-field appearance="outline" floatLabel="always">
+    <mat-form-field class="breed-search" appearance="outline" floatLabel="always">
       @if (catsStore.breedsLoading()) {
         <mat-spinner class="spinner" [diameter]="20"></mat-spinner>
       }
@@ -12,6 +12,7 @@
         matInput
         [formControlName]="'chosenBreed'"
         [matAutocomplete]="auto" />
+      <mat-icon matPrefix>search</mat-icon>
       <mat-autocomplete
         autoActiveFirstOption
         #auto="matAutocomplete"
@@ -24,14 +25,21 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Quantity of pictures</mat-label>
-      <mat-select [formControlName]="'quantityOfPictures'">
+      <mat-select
+        [formControlName]="'quantityOfPictures'"
+        [disabled]="catsStore.catsPicturesLoading() || catsStore.breedsLoading()">
         @for (quantity of quantityOptions; track quantity) {
           <mat-option [value]="quantity">{{ quantity }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
 
-    <button matButton="elevated" (click)="getCatsPictures()">Search</button>
+    <button
+      [disabled]="catsStore.catsPicturesLoading() || catsStore.breedsLoading()"
+      matButton="elevated"
+      (click)="getCatsPictures()">
+      Search 🐾
+    </button>
   </form>
 </div>
 

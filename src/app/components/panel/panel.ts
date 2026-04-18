@@ -3,11 +3,12 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatButton } from '@angular/material/button';
-import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatFormField, MatInput, MatLabel, MatPrefix } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { map, Observable, startWith } from 'rxjs';
+import { MatIcon } from '@angular/material/icon';
+import { debounceTime, distinctUntilChanged, map, Observable, startWith } from 'rxjs';
 
 import { CatsGallery } from 'src/app/components/cats-gallery/cats-gallery';
 import { CatBreed } from 'src/app/interfaces/cat-breed.interface';
@@ -29,12 +30,13 @@ import { CatsStore } from 'src/app/store/cats-store';
     AsyncPipe,
     MatButton,
     MatSelect,
-    CatsGallery
+    CatsGallery,
+    MatIcon,
+    MatPrefix,
   ],
   templateUrl: './panel.html',
   styleUrl: './panel.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [CatsStore],
 })
 export class Panel implements OnInit {
   private catApi = inject(CatApi);
@@ -48,7 +50,9 @@ export class Panel implements OnInit {
 
   public ngOnInit(): void {
     this.initState();
-    this.getBreeds();
+    if (!this.catsStore.breeds().length) {
+      this.getBreeds();
+    }
     this.getCatsPictures();
   }
 
@@ -62,6 +66,8 @@ export class Panel implements OnInit {
       this.searchParamsForm.get('chosenBreed') as FormControl
     ).valueChanges.pipe(
       startWith(''),
+      debounceTime(300),
+      distinctUntilChanged(),
       map(value => {
         const name = typeof value === 'string' ? value : value?.name;
         return this.filterBreeds(name as string);
@@ -88,7 +94,7 @@ export class Panel implements OnInit {
         this.catsStore.addBreeds(value);
       },
       error: error => {
-        this.catsStore.addBreeds([]);
+        this.catsStore.setBreedsLoading(false);
         this.searchParamsForm.get('chosenBreed')?.disable();
         this._snackBar.open(`Error: ${error.message ?? 'Failed to load breeds'}`, '', {
           duration: 3000,
@@ -108,7 +114,12 @@ export class Panel implements OnInit {
         next: (catsImages: CatImage[]) => {
           this.catsStore.addCatsPictures(catsImages);
         },
-        error: () => this.catsStore.addCatsPictures([]),
+        error: err => {
+          this.catsStore.setCatsPicturesLoading(false);
+          this._snackBar.open(`Error: ${err.message ?? 'Failed to load breeds'}`, '', {
+            duration: 3000,
+          });
+        },
       });
   }
 }

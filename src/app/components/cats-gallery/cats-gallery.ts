@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 

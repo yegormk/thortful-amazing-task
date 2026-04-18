@@ -1,0 +1,59 @@
+<section class="breed-library">
+  <mat-form-field appearance="outline" class="breed-library-search">
+    <mat-label>Search breeds</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Search by breed, origin, or temperament"
+      [value]="search()"
+      (input)="updateSearch($any($event.target).value)" />
+  </mat-form-field>
+
+  @if (catsStore.breedsLoading()) {
+    <div class="flex items-center justify-center">
+      <mat-spinner />
+    </div>
+  } @else {
+    <div class="breed-library-summary">
+      <p>{{ filteredBreeds().length }} breeds</p>
+    </div>
+
+    <div class="breed-library-grid">
+      @for (breed of filteredBreeds(); track breed.id) {
+        <mat-card class="breed-card" appearance="outlined">
+          <div class="breed-card-image-wrapper" title="Detailed view coming soon">
+            <img
+              [src]="breed.image?.url ?? 'assets/placholder-image.webp'"
+              [alt]="breed.name"
+              width="480"
+              height="320" />
+          </div>
+
+          <mat-card-content class="!p-5">
+            <div class="breed-card-heading">
+              <h2>{{ breed.name }}</h2>
+              <span>{{ breed.origin }}</span>
+            </div>
+
+            <p class="breed-card-description">{{ breed.description }}</p>
+
+            <dl class="breed-card-dl">
+              <div>
+                <dt>Temperament</dt>
+                <dd>{{ breed.temperament }}</dd>
+              </div>
+              <div>
+                <dt>Life span</dt>
+                <dd>{{ breed.life_span }} years</dd>
+              </div>
+              <div>
+                <dt>Weight</dt>
+                <dd>{{ breed.weight.metric }} kg</dd>
+              </div>
+            </dl>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+</section>
