@@ -25,9 +25,7 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Quantity of pictures</mat-label>
-      <mat-select
-        [formControlName]="'quantityOfPictures'"
-        [disabled]="catsStore.catsPicturesLoading() || catsStore.breedsLoading()">
+      <mat-select [formControlName]="'quantityOfPictures'">
         @for (quantity of quantityOptions; track quantity) {
           <mat-option [value]="quantity">{{ quantity }}</mat-option>
         }
