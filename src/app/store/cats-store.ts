@@ -12,15 +12,38 @@ export const CatsStore = signalStore(
     catsPicturesLoading: false,
   }),
   withMethods(store => ({
+    /**
+     * Save breeds into the store and stop the loading state
+     *
+     * @param catBreeds
+     */
     addBreeds(catBreeds: CatBreed[]) {
       patchState(store, { breeds: catBreeds, breedsLoading: false });
     },
+
+    /**
+     * Save cat pictures into the store and stop the loading state
+     *
+     * @param catsPictures
+     */
     addCatsPictures(catsPictures: CatImage[]) {
       patchState(store, { catsPictures, catsPicturesLoading: false });
     },
+
+    /**
+     * Update the cat pictures loading flag
+     *
+     * @param isLoading
+     */
     setCatsPicturesLoading(isLoading: boolean) {
       patchState(store, { catsPicturesLoading: isLoading });
     },
+
+    /**
+     * Update the breeds loading flag
+     *
+     * @param isLoading
+     */
     setBreedsLoading(isLoading: boolean) {
       patchState(store, { breedsLoading: isLoading });
     },

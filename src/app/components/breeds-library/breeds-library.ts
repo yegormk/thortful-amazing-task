@@ -46,17 +46,22 @@ export class BreedsLibrary implements OnInit {
     });
   });
 
+  /**
+   * Initialize the breeds library page data
+   */
   public ngOnInit(): void {
     this.checkPresentBreeds();
   }
 
+  /**
+   * Load breeds only when they are not already present in the store
+   */
   private checkPresentBreeds(): void {
     if (!this.catsStore.breeds().length) {
       this.catsStore.setBreedsLoading(true);
       this.catApi.getBreeds().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: breeds => {
           this.catsStore.addBreeds(breeds);
-          this.catsStore.setBreedsLoading(false);
         },
         error: error => {
           this.catsStore.setBreedsLoading(false);
@@ -68,6 +73,11 @@ export class BreedsLibrary implements OnInit {
     }
   }
 
+  /**
+   * Update the local search query for filtering breeds
+   *
+   * @param value
+   */
   public updateSearch(value: string): void {
     this.search.set(value);
   }

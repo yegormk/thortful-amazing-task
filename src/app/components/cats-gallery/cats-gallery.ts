@@ -27,6 +27,11 @@ export class CatsGallery {
     return this.catsStore.catsPictures().slice(start, start + this.pageSize());
   });
 
+  /**
+   * Update pagination state when the paginator page changes
+   *
+   * @param event
+   */
   public onPageChange(event: PageEvent): void {
     this.pageIndex.set(event.pageIndex);
     this.pageSize.set(event.pageSize);

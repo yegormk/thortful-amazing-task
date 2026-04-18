@@ -52,6 +52,9 @@ export class Panel implements OnInit {
   public searchParamsForm!: FormGroup;
   public filteredOptions!: Observable<CatBreed[]>;
 
+  /**
+   * Initialize the panel state and trigger initial data loading
+   */
   public ngOnInit(): void {
     this.initState();
     if (!this.catsStore.breeds().length) {
@@ -60,6 +63,9 @@ export class Panel implements OnInit {
     this.getCatsPictures();
   }
 
+  /**
+   * Create the form and wire the filtered autocomplete options
+   */
   private initState(): void {
     this.searchParamsForm = this.fb.group({
       chosenBreed: [this.ls.getData('chosenBreed')],
@@ -80,6 +86,11 @@ export class Panel implements OnInit {
     );
   }
 
+  /**
+   * Filter breeds by the provided breed name
+   *
+   * @param breedName
+   */
   private filterBreeds(breedName: string): CatBreed[] {
     const filterValue = breedName.toLowerCase();
 
@@ -88,10 +99,18 @@ export class Panel implements OnInit {
       .filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
+  /**
+   * Display the breed name inside the autocomplete input
+   *
+   * @param catBreed
+   */
   public displayBreedsFn(catBreed: CatBreed): string {
     return catBreed && catBreed.name ? catBreed.name : '';
   }
 
+  /**
+   * Load breeds and save them into the store
+   */
   private getBreeds(): void {
     this.catsStore.setBreedsLoading(true);
 
@@ -112,6 +131,9 @@ export class Panel implements OnInit {
       });
   }
 
+  /**
+   * Load cat pictures for the selected breed and selected amount of images
+   */
   public getCatsPictures(): void {
     this.catsStore.setCatsPicturesLoading(true);
     const chosenBreedId = this.searchParamsForm.get('chosenBreed')?.value;
