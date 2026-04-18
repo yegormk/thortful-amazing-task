@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { form, FormField } from '@angular/forms/signals';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -7,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CatApi } from 'src/app/services/cat-api';
 import { CatsStore } from 'src/app/store/cats-store';
+import { EmptyStateMessage } from 'src/app/components/empty-state-message/empty-state-message';
 
 @Component({
   selector: 'app-breeds-library',
@@ -16,7 +18,9 @@ import { CatsStore } from 'src/app/store/cats-store';
     MatFormField,
     MatInput,
     MatLabel,
-    MatProgressSpinner
+    MatProgressSpinner,
+    FormField,
+    EmptyStateMessage,
   ],
   templateUrl: './breeds-library.html',
   styleUrl: './breeds-library.scss',
@@ -28,10 +32,14 @@ export class BreedsLibrary implements OnInit {
   public catsStore = inject(CatsStore);
   private _snackBar = inject(MatSnackBar);
 
-  public search = signal('');
+  // It can be done way simpler, but let's look at new Angular v21 feature Form Signals ✨
+  public searchModel = signal({
+    query: '',
+  });
+  public searchForm = form(this.searchModel);
 
   public filteredBreeds = computed(() => {
-    const query = this.search().trim().toLowerCase();
+    const query = this.searchForm.query().value().trim().toLowerCase();
 
     if (!query) {
       return this.catsStore.breeds();
@@ -59,26 +67,20 @@ export class BreedsLibrary implements OnInit {
   private checkPresentBreeds(): void {
     if (!this.catsStore.breeds().length) {
       this.catsStore.setBreedsLoading(true);
-      this.catApi.getBreeds().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-        next: breeds => {
-          this.catsStore.addBreeds(breeds);
-        },
-        error: error => {
-          this.catsStore.setBreedsLoading(false);
-          this._snackBar.open(`Error: ${error.message ?? 'Failed to load breeds'}`, '', {
-            duration: 3000,
-          });
-        },
-      });
+      this.catApi
+        .getBreeds()
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: breeds => {
+            this.catsStore.addBreeds(breeds);
+          },
+          error: error => {
+            this.catsStore.setBreedsLoading(false);
+            this._snackBar.open(`Error: ${error.message ?? 'Failed to load breeds'}`, '', {
+              duration: 3000,
+            });
+          },
+        });
     }
-  }
-
-  /**
-   * Update the local search query for filtering breeds
-   *
-   * @param value
-   */
-  public updateSearch(value: string): void {
-    this.search.set(value);
   }
 }
