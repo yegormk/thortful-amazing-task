@@ -1,0 +1,21 @@
+.wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 280px));
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.cat-image {
+  border-radius: .5rem;
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.paginator {
+  background-color: #ffffff3b;
+}

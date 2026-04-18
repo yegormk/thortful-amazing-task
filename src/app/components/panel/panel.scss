@@ -1,0 +1,23 @@
+.form-data {
+  display: flex;
+  align-items: baseline;
+  padding: 15px 20px 5px;
+  gap: 10px;
+}
+
+.spinner {
+  position: absolute;
+  top: 20px;
+  left: 80px;
+  z-index: 1;
+}
+
+@media (max-width: 640px) {
+  .form-data {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .breed-search {
+    width: 100%;
+  }
+}

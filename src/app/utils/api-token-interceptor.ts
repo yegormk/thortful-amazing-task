@@ -7,7 +7,6 @@ export const apiTokenInterceptor: HttpInterceptorFn = (req, next) => {
   if (!token) {
     return next(req);
   }
-
   const authorizedRequest = req.clone({
     setHeaders: {
       'x-api-key': token,
