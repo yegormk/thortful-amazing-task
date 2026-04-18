@@ -8,6 +8,7 @@ import {
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
+import { EmptyStateMessage } from 'src/app/components/empty-state-message/empty-state-message';
 import { CatsStore } from 'src/app/store/cats-store';
 
 @Component({
@@ -15,7 +16,7 @@ import { CatsStore } from 'src/app/store/cats-store';
   templateUrl: './cats-gallery.html',
   styleUrl: './cats-gallery.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatProgressSpinner, MatPaginator],
+  imports: [EmptyStateMessage, MatProgressSpinner, MatPaginator],
 })
 export class CatsGallery {
   public catsStore = inject(CatsStore);
