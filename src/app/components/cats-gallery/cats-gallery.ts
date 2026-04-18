@@ -23,6 +23,9 @@ export class CatsGallery {
   public pageIndex = signal(0);
   public pageSize = signal(5);
 
+  /**
+   * Slice the store pictures array according to the current paginator state
+   */
   public paginatedPictures = computed(() => {
     const start = this.pageIndex() * this.pageSize();
     return this.catsStore.catsPictures().slice(start, start + this.pageSize());
