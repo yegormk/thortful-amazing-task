@@ -1,0 +1,42 @@
+<div>
+  <form class="form-data" [formGroup]="searchParamsForm">
+    <mat-form-field class="breed-search" appearance="outline" floatLabel="always">
+      @if (catsStore.breedsLoading()) {
+        <mat-spinner class="spinner" [diameter]="20"></mat-spinner>
+      }
+      <mat-label>Breeds 🐾</mat-label>
+      <input
+        type="text"
+        placeholder="Start typing..."
+        aria-label="Breed"
+        matInput
+        [appDisableControlWhen]="catsStore.breedsLoading() || catsStore.catsPicturesLoading()"
+        [formControlName]="'chosenBreed'"
+        [matAutocomplete]="auto" />
+      <mat-icon matPrefix>search</mat-icon>
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        [displayWith]="displayBreedsFn"
+        (optionSelected)="getCatsPictures()">
+        <mat-option [value]="''">All Breeds</mat-option>
+        @for (breed of filteredOptions | async; track breed.id) {
+          <mat-option [value]="breed">{{ breed.name }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Quantity of pictures 🐈</mat-label>
+      <mat-select
+        [appDisableControlWhen]="catsStore.breedsLoading() || catsStore.catsPicturesLoading()"
+        [formControlName]="'quantityOfPictures'"
+        (selectionChange)="getCatsPictures()">
+        @for (quantity of quantityOptions; track quantity) {
+          <mat-option [value]="quantity">{{ quantity }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+
+<app-cats-gallery></app-cats-gallery>

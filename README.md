@@ -1,59 +1,110 @@
-# ThortfulAmazingTask
+# Thortful Amazing Task
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.5.
+![App preview](./src/assets/done.webp)
 
-## Development server
+Angular single-page app for browsing cat images and exploring cat breeds.
 
-To start a local development server, run:
+Live demo:
+- GitHub Pages: `https://yegormk.github.io/thortful-amazing-task/`
 
-```bash
-ng serve
-```
+What the app includes:
+- `Cats Search` page to load cat images by breed
+- `Breeds Library` page to browse and search breed details
+- Data loaded from The Cat API
+- Angular Material UI
+- Reactive forms for search controls
+- Signal store state management with `@ngrx/signals`
+- Unit tests with Vitest
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Requirements
 
-## Code scaffolding
+- Node.js 20+ recommended
+- npm 11+ recommended
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Install
 
 ```bash
-ng build
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## API setup
 
-## Running unit tests
+This app uses The Cat API:
+- Docs: `https://thecatapi.com/`
+- API base URL: `https://api.thecatapi.com/v1`
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Before starting the app locally, extract the API key from source control and keep it in your local environment config files instead.
+
+Create these files from `src/environments/environment.example.ts`:
+- `src/environments/environment.ts`
+- `src/environments/environment.development.ts`
+
+Then add your own API key in both files:
+
+```ts
+export const environment = {
+  production: false,
+  apiUrl: 'https://api.thecatapi.com/v1',
+  API_KEY: 'PUT_YOUR_API_KEY_HERE',
+};
+```
+
+The app sends the key through the `x-api-key` header via `src/app/utils/api-token-interceptor.ts:1`.
+
+## Start locally
 
 ```bash
-ng test
+npm start
 ```
 
-## Running end-to-end tests
+Then open:
 
-For end-to-end (e2e) testing, run:
+```text
+http://localhost:4200/
+```
+
+## Available scripts
+
+Start development server:
 
 ```bash
-ng e2e
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Build the app:
 
-## Additional Resources
+```bash
+npm run build
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Run unit tests:
+
+```bash
+npm test
+```
+
+Build for GitHub Pages:
+
+```bash
+npm run github-build
+```
+
+Deploy to GitHub Pages:
+
+```bash
+npm run github-deploy
+```
+
+## Routes
+
+- `/cats-search` - search cats by breed and picture count
+- `/breeds-library` - browse and search breed information
+
+## Tech stack
+
+- Angular 21
+- Angular Material
+- Tailwind CSS
+- RxJS
+- `@ngrx/signals`
+- Vitest

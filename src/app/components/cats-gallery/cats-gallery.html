@@ -1,0 +1,25 @@
+@if (!catsStore.catsPicturesLoading()) {
+  @if (paginatedPictures().length) {
+    <div class="wrapper px-4 pb-4">
+      @for (catImage of paginatedPictures(); track catImage.id) {
+        <img class="cat-image" [src]="catImage.url" alt="Image of a cat" />
+      }
+    </div>
+    <mat-paginator
+      class="paginator"
+      [length]="catsStore.catsPictures().length"
+      [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="[5, 10, 15, 20]"
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  } @else {
+    <app-empty-state-message
+      [message]="'Oops... Looks like there are no images available. That’s interesting 🧐'"
+      [submessage]="'Try to choose another breed'"></app-empty-state-message>
+  }
+} @else {
+  <div class="flex items-center justify-center">
+    <mat-spinner class="spinner"></mat-spinner>
+  </div>
+}
