@@ -5,8 +5,8 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 import { EmptyStateMessage } from 'src/app/components/empty-state-message/empty-state-message';
 import { CatsStore } from 'src/app/store/cats-store';

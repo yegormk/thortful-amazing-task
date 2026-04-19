@@ -1,6 +1,6 @@
-import { of, throwError } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { of, throwError } from 'rxjs';
 
 import { CatApi } from 'src/app/services/cat-api';
 import { LocalStorageHelperService } from 'src/app/services/local-storage-helper';

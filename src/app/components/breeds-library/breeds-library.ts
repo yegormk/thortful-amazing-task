@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { form, FormField } from '@angular/forms/signals';
@@ -6,9 +7,9 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { EmptyStateMessage } from 'src/app/components/empty-state-message/empty-state-message';
 import { CatApi } from 'src/app/services/cat-api';
 import { CatsStore } from 'src/app/store/cats-store';
-import { EmptyStateMessage } from 'src/app/components/empty-state-message/empty-state-message';
 
 @Component({
   selector: 'app-breeds-library',
@@ -21,6 +22,7 @@ import { EmptyStateMessage } from 'src/app/components/empty-state-message/empty-
     MatProgressSpinner,
     FormField,
     EmptyStateMessage,
+    NgClass,
   ],
   templateUrl: './breeds-library.html',
   styleUrl: './breeds-library.scss',
