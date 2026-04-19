@@ -21,8 +21,9 @@
       <div class="breed-library-grid">
         @for (breed of filteredBreeds(); track breed.id) {
           <mat-card class="breed-card" appearance="outlined">
-            <div class="breed-card-image-wrapper" title="Detailed view coming soon">
+            <div class="breed-card-image-wrapper bg-white" title="Detailed view coming soon">
               <img
+                [ngClass]="{ '!object-contain': !breed.image?.url }"
                 [src]="breed.image?.url ?? 'assets/placholder-image.webp'"
                 [alt]="breed.name"
                 width="480"

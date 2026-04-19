@@ -1,10 +1,10 @@
-import { of, throwError } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { of, throwError } from 'rxjs';
 
+import { CatBreed } from 'src/app/interfaces/cat-breed.interface';
 import { CatApi } from 'src/app/services/cat-api';
 import { CatsStore } from 'src/app/store/cats-store';
-import { CatBreed } from 'src/app/interfaces/cat-breed.interface';
 
 import { BreedsLibrary } from './breeds-library';
 

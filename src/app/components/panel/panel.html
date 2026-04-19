@@ -4,19 +4,21 @@
       @if (catsStore.breedsLoading()) {
         <mat-spinner class="spinner" [diameter]="20"></mat-spinner>
       }
-      <mat-label>Breeds</mat-label>
+      <mat-label>Breeds 🐾</mat-label>
       <input
         type="text"
         placeholder="Start typing..."
         aria-label="Breed"
         matInput
+        [appDisableControlWhen]="catsStore.breedsLoading() || catsStore.catsPicturesLoading()"
         [formControlName]="'chosenBreed'"
         [matAutocomplete]="auto" />
       <mat-icon matPrefix>search</mat-icon>
       <mat-autocomplete
-        autoActiveFirstOption
         #auto="matAutocomplete"
-        [displayWith]="displayBreedsFn">
+        [displayWith]="displayBreedsFn"
+        (optionSelected)="getCatsPictures()">
+        <mat-option [value]="''">All Breeds</mat-option>
         @for (breed of filteredOptions | async; track breed.id) {
           <mat-option [value]="breed">{{ breed.name }}</mat-option>
         }
@@ -24,20 +26,16 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Quantity of pictures</mat-label>
-      <mat-select [formControlName]="'quantityOfPictures'">
+      <mat-label>Quantity of pictures 🐈</mat-label>
+      <mat-select
+        [appDisableControlWhen]="catsStore.breedsLoading() || catsStore.catsPicturesLoading()"
+        [formControlName]="'quantityOfPictures'"
+        (selectionChange)="getCatsPictures()">
         @for (quantity of quantityOptions; track quantity) {
           <mat-option [value]="quantity">{{ quantity }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
-
-    <button
-      [disabled]="catsStore.catsPicturesLoading() || catsStore.breedsLoading()"
-      matButton="elevated"
-      (click)="getCatsPictures()">
-      Search 🐾
-    </button>
   </form>
 </div>
 

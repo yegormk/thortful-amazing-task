@@ -1,17 +1,23 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatInput, MatLabel, MatPrefix } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatIcon } from '@angular/material/icon';
 import { debounceTime, distinctUntilChanged, map, Observable, startWith } from 'rxjs';
 
 import { CatsGallery } from 'src/app/components/cats-gallery/cats-gallery';
+import { DisableControlWhenDirective } from 'src/app/directives/disable-control-when.directive';
 import { CatBreed } from 'src/app/interfaces/cat-breed.interface';
 import { CatImage } from 'src/app/interfaces/cat-image.interface';
 import { CatApi } from 'src/app/services/cat-api';
@@ -30,9 +36,9 @@ import { LocalStorageHelperService } from 'src/app/services/local-storage-helper
     MatAutocomplete,
     MatInput,
     AsyncPipe,
-    MatButton,
     MatSelect,
     CatsGallery,
+    DisableControlWhenDirective,
     MatIcon,
     MatPrefix,
   ],
@@ -59,6 +65,8 @@ export class Panel implements OnInit {
     this.initState();
     if (!this.catsStore.breeds().length) {
       this.getBreeds();
+    } else {
+      this.subscribeToChangesFromAutocomplete();
     }
     this.getCatsPictures();
   }
@@ -71,12 +79,17 @@ export class Panel implements OnInit {
       chosenBreed: [this.ls.getData('chosenBreed')],
       quantityOfPictures: this.ls.getData('quantityOfPictures') || 10,
     });
+  }
 
+  /**
+   * Bind autocomplete results to breed input changes.
+   */
+  private subscribeToChangesFromAutocomplete(): void {
     this.filteredOptions = (
       this.searchParamsForm.get('chosenBreed') as FormControl
     ).valueChanges.pipe(
       takeUntilDestroyed(this.destroyRef),
-      startWith(''),
+      startWith(this.ls.getData('chosenBreed')),
       debounceTime(300),
       distinctUntilChanged(),
       map(value => {
@@ -120,6 +133,7 @@ export class Panel implements OnInit {
       .subscribe({
         next: (value: CatBreed[]) => {
           this.catsStore.addBreeds(value);
+          this.subscribeToChangesFromAutocomplete();
         },
         error: error => {
           this.catsStore.setBreedsLoading(false);

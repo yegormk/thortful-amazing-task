@@ -2,9 +2,7 @@
   @if (paginatedPictures().length) {
     <div class="wrapper px-4 pb-4">
       @for (catImage of paginatedPictures(); track catImage.id) {
-        <div style="position: relative">
-          <img class="cat-image" [src]="catImage.url" alt="Image of a cat" />
-        </div>
+        <img class="cat-image" [src]="catImage.url" alt="Image of a cat" />
       }
     </div>
     <mat-paginator

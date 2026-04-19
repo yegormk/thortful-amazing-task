@@ -1,6 +1,8 @@
 <mat-sidenav-container class="h-screen">
   <mat-sidenav #sidenav mode="over" class="sidenav" [autoFocus]="false">
-    <img src="assets/logo-orange-guys.svg" alt="Company Logo" class="p-4" />
+    <a routerLink="/cats-search" (click)="sidenav.close()" aria-label="Go to cats search">
+      <img src="assets/logo-orange-guys.svg" alt="Company Logo" class="p-4" />
+    </a>
     <mat-nav-list>
       <a
         mat-list-item
@@ -22,7 +24,9 @@
 
   <mat-sidenav-content class="content">
     <header class="header">
-      <img src="assets/logo-orange-guys.svg" alt="thortful logo" class="w-[60px]" />
+      <a routerLink="/cats-search" aria-label="Go to cats search">
+        <img src="assets/logo-orange-guys.svg" alt="thortful logo" class="w-[60px]" />
+      </a>
       <button mat-icon-button type="button" aria-label="Open navigation" (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
