@@ -10,6 +10,7 @@
         placeholder="Start typing..."
         aria-label="Breed"
         matInput
+        [appDisableControlWhen]="catsStore.breedsLoading() || catsStore.catsPicturesLoading()"
         [formControlName]="'chosenBreed'"
         [matAutocomplete]="auto" />
       <mat-icon matPrefix>search</mat-icon>
@@ -26,7 +27,10 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Quantity of pictures 🐈</mat-label>
-      <mat-select [formControlName]="'quantityOfPictures'" (selectionChange)="getCatsPictures()">
+      <mat-select
+        [appDisableControlWhen]="catsStore.breedsLoading() || catsStore.catsPicturesLoading()"
+        [formControlName]="'quantityOfPictures'"
+        (selectionChange)="getCatsPictures()">
         @for (quantity of quantityOptions; track quantity) {
           <mat-option [value]="quantity">{{ quantity }}</mat-option>
         }

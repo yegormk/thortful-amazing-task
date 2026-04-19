@@ -17,6 +17,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged, map, Observable, startWith } from 'rxjs';
 
 import { CatsGallery } from 'src/app/components/cats-gallery/cats-gallery';
+import { DisableControlWhenDirective } from 'src/app/directives/disable-control-when.directive';
 import { CatBreed } from 'src/app/interfaces/cat-breed.interface';
 import { CatImage } from 'src/app/interfaces/cat-image.interface';
 import { CatApi } from 'src/app/services/cat-api';
@@ -37,6 +38,7 @@ import { LocalStorageHelperService } from 'src/app/services/local-storage-helper
     AsyncPipe,
     MatSelect,
     CatsGallery,
+    DisableControlWhenDirective,
     MatIcon,
     MatPrefix,
   ],
