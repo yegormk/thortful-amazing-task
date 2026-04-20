@@ -4,6 +4,7 @@ import {
   computed,
   inject,
   signal,
+  effect, untracked
 } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -22,6 +23,16 @@ export class CatsGallery {
   public catsStore = inject(CatsStore);
   public pageIndex = signal(0);
   public pageSize = signal(5);
+
+  /**
+   * HOTFIX: There was a bug with pagination and a lack of images :(
+   * But anyway, we can see on this example - how the effect works with the untracked method inside.
+   * Sorry, I've just seen this 🙏
+   */
+  trackForChangesInTheStore = effect(() => {
+    this.catsStore.catsPictures();
+    untracked(() => this.pageIndex.set(0));
+  });
 
   /**
    * Slice the store pictures array according to the current paginator state
